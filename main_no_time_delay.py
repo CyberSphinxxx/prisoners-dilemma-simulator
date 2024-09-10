@@ -2,7 +2,7 @@ class Prisoner:
 
     def __init__(self, strategy):
         self.strategy = strategy
-        self.revenger_mode = False  # Used only by the Revenger type
+        self.revenger_mode = False
 
     def choose(self, opponent_last_choice=None):
         if self.strategy == 'cooperator':
