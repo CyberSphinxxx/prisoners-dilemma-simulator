@@ -75,53 +75,59 @@ strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat', 5
 
 separator = "="*45  # Separator line
 
-# Game setup
-print(separator)  
-print("Choose your prisoner type:")
-print("1. Cooperator")
-print("2. Defector")
-print("3. Revenger")
-print("4. Tit-for-Tat")
-print("5. Random")
-print(separator)
+while True:  # Loop for simulating again
+    # Game setup
+    print(separator)  
+    print("Choose your prisoner type:")
+    print("1. Cooperator")
+    print("2. Defector")
+    print("3. Revenger")
+    print("4. Tit-for-Tat")
+    print("5. Random")
+    print(separator)
 
-prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
-prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
-print(separator)
+    prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
+    prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
+    print(separator)
 
-# Create prisoner instances
-prisoner_a = Prisoner(strategies[prisoner_a_choice])
-prisoner_b = Prisoner(strategies[prisoner_b_choice])
+    # Create prisoner instances
+    prisoner_a = Prisoner(strategies[prisoner_a_choice])
+    prisoner_b = Prisoner(strategies[prisoner_b_choice])
 
-# Get number of rounds
-rounds = int(input("Enter the number of rounds to simulate: "))
-print(separator)
+    # Get number of rounds
+    rounds = int(input("Enter the number of rounds to simulate: "))
+    print(separator)
 
-# Ask if the user wants a time delay
-use_delay = input("Add time delay between rounds? (y/n): ").strip().lower()
-print(separator)
+    # Ask if the user wants a time delay
+    use_delay = input("Add time delay between rounds? (y/n): ").strip().lower()
+    print(separator)
 
-# Set delay based on user input
-if use_delay == 'y':
-    delay = 1  # Default delay of 1 second
-else:
-    delay = 0  # No delay
+    # Set delay based on user input
+    if use_delay == 'y':
+        delay = 1  # Default delay of 1 second
+    else:
+        delay = 0  # No delay
 
-# Run the simulation
-a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds, delay)
+    # Run the simulation
+    a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds, delay)
 
-# Display results
-print(separator)
-print(f"Results after {rounds} rounds:")
-print(f"Prisoner A ({strategies[prisoner_a_choice]}): {a_points} points")
-print(f"Prisoner B ({strategies[prisoner_b_choice]}): {b_points} points")
+    # Display results
+    print(separator)
+    print(f"Results after {rounds} rounds:")
+    print(f"Prisoner A ({strategies[prisoner_a_choice]}): {a_points} points")
+    print(f"Prisoner B ({strategies[prisoner_b_choice]}): {b_points} points")
 
-# Determine the winner
-if a_points > b_points:
-    print("Winner: Prisoner A")
-elif b_points > a_points:
-    print("Winner: Prisoner B")
-else:
-    print("Result: tie")
+    # Determine the winner
+    if a_points > b_points:
+        print("Winner: Prisoner A")
+    elif b_points > a_points:
+        print("Winner: Prisoner B")
+    else:
+        print("Result: tie")
 
-print(separator)
+    print(separator)
+
+    # Ask if the user wants to simulate again
+    simulate_again = input("Do you want to simulate again? (y/n): ").strip().lower()
+    if simulate_again != 'y':
+        break  # Exit the loop if the user doesn't want to simulate again
