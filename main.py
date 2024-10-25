@@ -73,16 +73,21 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
 # Define strategies
 strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat', 5: 'random'}
 
+separator = "="*45 # Separator line
+
 # Game setup
+print(separator)  
 print("Choose your prisoner type:")
 print("1. Cooperator")
 print("2. Defector")
 print("3. Revenger")
 print("4. Tit-for-Tat")
 print("5. Random")
+print(separator)
 
 prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
 prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
+print(separator)
 
 # Create prisoner instances
 prisoner_a = Prisoner(strategies[prisoner_a_choice])
@@ -90,9 +95,11 @@ prisoner_b = Prisoner(strategies[prisoner_b_choice])
 
 # Get number of rounds
 rounds = int(input("Enter the number of rounds to simulate: "))
+print(separator)
 
 # Ask if the user wants a time delay
-use_delay = input("Do you want a time delay between rounds? (y/n): ").strip().lower()
+use_delay = input("Add time delay between rounds? (y/n): ").strip().lower()
+print(separator)
 
 # Set delay based on user input
 if use_delay == 'y':
@@ -104,6 +111,8 @@ else:
 a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds, delay)
 
 # Display results
-print(f"\nResults after {rounds} rounds:")
+print(separator)
+print(f"Results after {rounds} rounds:")
 print(f"Prisoner A ({strategies[prisoner_a_choice]}): {a_points} points")
 print(f"Prisoner B ({strategies[prisoner_b_choice]}): {b_points} points")
+print(separator)
