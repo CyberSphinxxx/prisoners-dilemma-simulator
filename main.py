@@ -73,7 +73,7 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
 # Define strategies
 strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat', 5: 'random'}
 
-separator = "="*45  # Separator line
+separator = "=" * 45  # Separator line
 
 while True:  # Loop for simulating again
     # Game setup
@@ -86,16 +86,35 @@ while True:  # Loop for simulating again
     print("5. Random")
     print(separator)
 
-    prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
-    prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
+    # Safety check for prisoner choices
+    while True:
+        try:
+            prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
+            prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
+            if prisoner_a_choice in strategies and prisoner_b_choice in strategies:
+                break  # Valid choices, exit loop
+            else:
+                print("Invalid choice! Please choose a number between 1 and 5.")
+        except ValueError:
+            print("Invalid input! Please enter a number.")
+
     print(separator)
 
     # Create prisoner instances
     prisoner_a = Prisoner(strategies[prisoner_a_choice])
     prisoner_b = Prisoner(strategies[prisoner_b_choice])
 
-    # Get number of rounds
-    rounds = int(input("Enter the number of rounds to simulate: "))
+    # Get number of rounds with a safety check
+    while True:
+        try:
+            rounds = int(input("Enter the number of rounds to simulate: "))
+            if rounds > 0:
+                break
+            else:
+                print("Number of rounds must be greater than 0.")
+        except ValueError:
+            print("Invalid input! Please enter a positive integer.")
+    
     print(separator)
 
     # Ask if the user wants a time delay
@@ -103,10 +122,7 @@ while True:  # Loop for simulating again
     print(separator)
 
     # Set delay based on user input
-    if use_delay == 'y':
-        delay = 1  # Default delay of 1 second
-    else:
-        delay = 0  # No delay
+    delay = 1 if use_delay == 'y' else 0
 
     # Run the simulation
     a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds, delay)
