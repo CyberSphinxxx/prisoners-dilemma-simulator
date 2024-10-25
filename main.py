@@ -1,20 +1,29 @@
 import random
 import time
 
+COOPERATOR = 'cooperator'
+DEFECTOR = 'defector'
+REVENGER = 'revenger'
+TIT_FOR_TAT = 'tit_for_tat'
+RANDOM = 'random'
+DETECTIVE = 'detective'
+
 class Prisoner:
     def __init__(self, strategy):
         self.strategy = strategy
         self.revenger_mode = False
         self.round_counter = 0
+        self.detective_saw_defection = False  # Track if opponent defected in Detective strategy
 
     def choose(self, opponent_last_choice=None):
-        if self.strategy == 'cooperator':
+        """Decides whether to cooperate or defect based on the selected strategy."""
+        if self.strategy == COOPERATOR:
             return 'cooperate'
         
-        elif self.strategy == 'defector':
+        elif self.strategy == DEFECTOR:
             return 'defect'
         
-        elif self.strategy == 'revenger':
+        elif self.strategy == REVENGER:
             if self.revenger_mode:
                 return 'defect'
             elif opponent_last_choice == 'defect':
@@ -23,24 +32,27 @@ class Prisoner:
             else:
                 return 'cooperate'
         
-        elif self.strategy == 'tit_for_tat':
-            if opponent_last_choice is None:
-                return 'cooperate'
-            else:
-                return opponent_last_choice
+        elif self.strategy == TIT_FOR_TAT:
+            return 'cooperate' if opponent_last_choice is None else opponent_last_choice
         
-        elif self.strategy == 'random':
+        elif self.strategy == RANDOM:
             return random.choice(['cooperate', 'defect'])
         
-        elif self.strategy == 'detective':
+        elif self.strategy == DETECTIVE:
+            # Detective "testing" phase for the first four rounds
             if self.round_counter < 4:
-                return 'cooperate' if self.round_counter % 2 == 0 else 'defect'
-            else:
+                choice = 'cooperate' if self.round_counter % 2 == 0 else 'defect'
+                self.round_counter += 1
                 if opponent_last_choice == 'defect':
+                    self.detective_saw_defection = True
+                return choice
+            # After testing phase: apply Tit-for-Tat if opponent defected; otherwise, defect
+            else:
+                if self.detective_saw_defection:
                     return opponent_last_choice
                 else:
                     return 'defect'
-
+        
         else:
             raise ValueError("Unknown strategy!")
 
@@ -51,20 +63,18 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
     for round_number in range(1, rounds + 1):
         if delay > 0:
             print(f"\nRound {round_number}...")
-        
+
         a_choice = prisoner_a.choose(last_b_choice)
         b_choice = prisoner_b.choose(last_a_choice)
 
+        # Award points based on choices
         if a_choice == 'cooperate' and b_choice == 'cooperate':
             a_points += 1
             b_points += 1
-
         elif a_choice == 'cooperate' and b_choice == 'defect':
             b_points += 4
-
         elif a_choice == 'defect' and b_choice == 'cooperate':
             a_points += 4
-            
         elif a_choice == 'defect' and b_choice == 'defect':
             a_points += 2
             b_points += 2
@@ -73,14 +83,8 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
             print(f"Prisoner A chose: {a_choice}, Prisoner B chose: {b_choice}")
             print(f"Current points - Prisoner A: {a_points}, Prisoner B: {b_points}")
 
-        last_a_choice = a_choice
-        last_b_choice = b_choice
-
-        # Increment round counter for Detective strategy
-        if prisoner_a.strategy == 'detective':
-            prisoner_a.round_counter += 1
-        if prisoner_b.strategy == 'detective':
-            prisoner_b.round_counter += 1
+        # Update last choices for the next round
+        last_a_choice, last_b_choice = a_choice, b_choice
 
         time.sleep(delay)
 
@@ -88,12 +92,12 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
 
 # Define strategies
 strategies = {
-    1: 'cooperator',
-    2: 'defector',
-    3: 'revenger',
-    4: 'tit_for_tat',
-    5: 'random',
-    6: 'detective'  # Add Detective to the strategies
+    1: COOPERATOR,
+    2: DEFECTOR,
+    3: REVENGER,
+    4: TIT_FOR_TAT,
+    5: RANDOM,
+    6: DETECTIVE
 }
 
 separator = "=" * 45  # Separator line
@@ -102,12 +106,8 @@ while True:  # Loop for simulating again
     # Game setup
     print(separator)  
     print("Choose your prisoner type:")
-    print("1. Cooperator")
-    print("2. Defector")
-    print("3. Revenger")
-    print("4. Tit-for-Tat")
-    print("5. Random")
-    print("6. Detective")
+    for num, strat in strategies.items():
+        print(f"{num}. {strat.capitalize()}")
     print(separator)
 
     # Safety check for prisoner choices
