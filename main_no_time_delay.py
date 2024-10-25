@@ -1,4 +1,5 @@
 import random
+import time
 
 class Prisoner:
     def __init__(self, strategy):
@@ -33,11 +34,14 @@ class Prisoner:
         else:
             raise ValueError("Unknown strategy!")
 
-def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1):
+def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
     a_points, b_points = 0, 0
     last_a_choice, last_b_choice = None, None
 
-    for _ in range(rounds):
+    for round_number in range(1, rounds + 1):
+        if delay > 0:
+            print(f"\nRound {round_number}...")
+        
         a_choice = prisoner_a.choose(last_b_choice)
         b_choice = prisoner_b.choose(last_a_choice)
 
@@ -50,13 +54,19 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1):
 
         elif a_choice == 'defect' and b_choice == 'cooperate':
             a_points += 4
-
+            
         elif a_choice == 'defect' and b_choice == 'defect':
             a_points += 2
             b_points += 2
 
+        if delay > 0:  # Only print choices if there's a delay
+            print(f"Prisoner A chose: {a_choice}, Prisoner B chose: {b_choice}")
+            print(f"Current points - Prisoner A: {a_points}, Prisoner B: {b_points}")
+
         last_a_choice = a_choice
         last_b_choice = b_choice
+
+        time.sleep(delay)
 
     return a_points, b_points
 
@@ -78,11 +88,22 @@ prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
 prisoner_a = Prisoner(strategies[prisoner_a_choice])
 prisoner_b = Prisoner(strategies[prisoner_b_choice])
 
-# Run the simulation
+# Get number of rounds
 rounds = int(input("Enter the number of rounds to simulate: "))
-a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds)
+
+# Ask if the user wants a time delay
+use_delay = input("Do you want a time delay between rounds? (y/n): ").strip().lower()
+
+# Set delay based on user input
+if use_delay == 'y':
+    delay = 1  # Default delay of 1 second
+else:
+    delay = 0  # No delay
+
+# Run the simulation
+a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds, delay)
 
 # Display results
-print(f"\nAfter {rounds} rounds:")
+print(f"\nResults after {rounds} rounds:")
 print(f"Prisoner A ({strategies[prisoner_a_choice]}): {a_points} points")
 print(f"Prisoner B ({strategies[prisoner_b_choice]}): {b_points} points")
