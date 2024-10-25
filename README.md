@@ -1,15 +1,19 @@
 # Prisoners Dilemma Simulator
-This Python program simulates the Prisoner's Dilemma game, allowing players to choose between different prisoner strategies (Cooperator, Defector, Revenger).
+
+This Python program simulates the Prisoner's Dilemma game, allowing players to choose between different prisoner strategies (Cooperator, Defector, Revenger, Tit-for-Tat, Random, and Detective).
 
 The game runs for a specified number of rounds, with a brief delay between each round, and includes an option to view descriptions of each strategy before starting.
 
 ## Features
 
-- **Three Strategies**:
+- **Six Strategies**:
   - **Cooperator**: Always cooperates.
   - **Defector**: Always defects.
   - **Revenger**: Cooperates until the opponent defects, then always defects afterward.
-  
+  - **Tit-for-Tat**: Starts by cooperating, then mimics the opponent's last move.
+  - **Random**: Randomly chooses to cooperate or defect each round.
+  - **Detective**: Alternates between cooperation and defection for the first four rounds, then switches to Tit-for-Tat if the opponent defects; otherwise, it continues to defect.
+
 - **Point System**:
   - Both prisoners cooperate: +1 point each.
   - One defects while the other cooperates: Defector gets +4 points, cooperator gets 0 points.
@@ -24,6 +28,10 @@ The game runs for a specified number of rounds, with a brief delay between each 
 3. Points are awarded based on the prisoners' choices each round.
 4. At the end of the simulation, the total points for both prisoners are displayed.
 
+## Sample Output
+![Screenshot 2024-10-26 031847](https://github.com/user-attachments/assets/1748b442-3236-49b0-b066-7911d12ac41e)
+
+
 ## Code Overview
 
 ### `Prisoner` Class
@@ -31,8 +39,9 @@ The game runs for a specified number of rounds, with a brief delay between each 
 The `Prisoner` class contains a strategy and a revenger mode. Depending on the strategy, the prisoner chooses to cooperate or defect in each round.
 
 - **Attributes**:
-  - `strategy`: Defines the strategy the prisoner follows (cooperator, defector, or revenger).
+  - `strategy`: Defines the strategy the prisoner follows (cooperator, defector, revenger, tit_for_tat, random, or detective).
   - `revenger_mode`: Activated if the prisoner is in "revenger" mode and the opponent defects.
+  - `round_counter`: Tracks the number of rounds for the Detective strategy.
 
 - **Methods**:
   - `choose(opponent_last_choice)`: Determines whether to cooperate or defect based on the chosen strategy.
@@ -45,6 +54,6 @@ This function simulates the Prisoner's Dilemma over a specified number of rounds
   - `prisoner_a`: Prisoner A's strategy.
   - `prisoner_b`: Prisoner B's strategy.
   - `rounds`: Number of rounds to simulate.
-  
+
 - **Returns**:
   - Points for both prisoners after the rounds are completed.
