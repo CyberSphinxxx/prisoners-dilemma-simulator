@@ -5,6 +5,7 @@ class Prisoner:
     def __init__(self, strategy):
         self.strategy = strategy
         self.revenger_mode = False
+        self.round_counter = 0
 
     def choose(self, opponent_last_choice=None):
         if self.strategy == 'cooperator':
@@ -27,9 +28,18 @@ class Prisoner:
                 return 'cooperate'
             else:
                 return opponent_last_choice
-
+        
         elif self.strategy == 'random':
             return random.choice(['cooperate', 'defect'])
+        
+        elif self.strategy == 'detective':
+            if self.round_counter < 4:
+                return 'cooperate' if self.round_counter % 2 == 0 else 'defect'
+            else:
+                if opponent_last_choice == 'defect':
+                    return opponent_last_choice
+                else:
+                    return 'defect'
 
         else:
             raise ValueError("Unknown strategy!")
@@ -66,12 +76,25 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
         last_a_choice = a_choice
         last_b_choice = b_choice
 
+        # Increment round counter for Detective strategy
+        if prisoner_a.strategy == 'detective':
+            prisoner_a.round_counter += 1
+        if prisoner_b.strategy == 'detective':
+            prisoner_b.round_counter += 1
+
         time.sleep(delay)
 
     return a_points, b_points
 
 # Define strategies
-strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat', 5: 'random'}
+strategies = {
+    1: 'cooperator',
+    2: 'defector',
+    3: 'revenger',
+    4: 'tit_for_tat',
+    5: 'random',
+    6: 'detective'  # Add Detective to the strategies
+}
 
 separator = "=" * 45  # Separator line
 
@@ -84,17 +107,18 @@ while True:  # Loop for simulating again
     print("3. Revenger")
     print("4. Tit-for-Tat")
     print("5. Random")
+    print("6. Detective")
     print(separator)
 
     # Safety check for prisoner choices
     while True:
         try:
-            prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
-            prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
+            prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-6): "))
+            prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-6): "))
             if prisoner_a_choice in strategies and prisoner_b_choice in strategies:
                 break  # Valid choices, exit loop
             else:
-                print("Invalid choice! Please choose a number between 1 and 5.")
+                print("Invalid choice! Please choose a number between 1 and 6.")
         except ValueError:
             print("Invalid input! Please enter a number.")
 
