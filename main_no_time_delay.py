@@ -27,6 +27,9 @@ class Prisoner:
             else:
                 return opponent_last_choice
 
+        elif self.strategy == 'random':
+            return random.choice(['cooperate', 'defect'])
+
         else:
             raise ValueError("Unknown strategy!")
 
@@ -58,7 +61,7 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1):
     return a_points, b_points
 
 # Define strategies
-strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat'}
+strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat', 5: 'random'}
 
 # Game setup
 print("Choose your prisoner type:")
@@ -66,9 +69,10 @@ print("1. Cooperator")
 print("2. Defector")
 print("3. Revenger")
 print("4. Tit-for-Tat")
+print("5. Random")
 
-prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-4): "))
-prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-4): "))
+prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-5): "))
+prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-5): "))
 
 # Create prisoner instances
 prisoner_a = Prisoner(strategies[prisoner_a_choice])
