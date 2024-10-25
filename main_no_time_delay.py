@@ -1,5 +1,6 @@
-class Prisoner:
+import random
 
+class Prisoner:
     def __init__(self, strategy):
         self.strategy = strategy
         self.revenger_mode = False
@@ -19,7 +20,13 @@ class Prisoner:
                 return 'defect'
             else:
                 return 'cooperate'
-            
+        
+        elif self.strategy == 'tit_for_tat':
+            if opponent_last_choice is None:
+                return 'cooperate'
+            else:
+                return opponent_last_choice
+
         else:
             raise ValueError("Unknown strategy!")
 
@@ -50,22 +57,28 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1):
 
     return a_points, b_points
 
-strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger'}
+# Define strategies
+strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat'}
 
+# Game setup
 print("Choose your prisoner type:")
 print("1. Cooperator")
 print("2. Defector")
 print("3. Revenger")
+print("4. Tit-for-Tat")
 
-prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-3): "))
-prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-3): "))
+prisoner_a_choice = int(input("Choose strategy for Prisoner A (1-4): "))
+prisoner_b_choice = int(input("Choose strategy for Prisoner B (1-4): "))
 
+# Create prisoner instances
 prisoner_a = Prisoner(strategies[prisoner_a_choice])
 prisoner_b = Prisoner(strategies[prisoner_b_choice])
 
+# Run the simulation
 rounds = int(input("Enter the number of rounds to simulate: "))
 a_points, b_points = prisoners_dilemma(prisoner_a, prisoner_b, rounds)
 
+# Display results
 print(f"\nAfter {rounds} rounds:")
 print(f"Prisoner A ({strategies[prisoner_a_choice]}): {a_points} points")
 print(f"Prisoner B ({strategies[prisoner_b_choice]}): {b_points} points")
