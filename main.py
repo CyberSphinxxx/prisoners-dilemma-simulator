@@ -73,7 +73,7 @@ def prisoners_dilemma(prisoner_a, prisoner_b, rounds=1, delay=1):
 # Define strategies
 strategies = {1: 'cooperator', 2: 'defector', 3: 'revenger', 4: 'tit_for_tat', 5: 'random'}
 
-separator = "="*45 # Separator line
+separator = "="*45  # Separator line
 
 # Game setup
 print(separator)  
@@ -115,4 +115,13 @@ print(separator)
 print(f"Results after {rounds} rounds:")
 print(f"Prisoner A ({strategies[prisoner_a_choice]}): {a_points} points")
 print(f"Prisoner B ({strategies[prisoner_b_choice]}): {b_points} points")
+
+# Determine the winner
+if a_points > b_points:
+    print("Winner: Prisoner A")
+elif b_points > a_points:
+    print("Winner: Prisoner B")
+else:
+    print("Result: tie")
+
 print(separator)
