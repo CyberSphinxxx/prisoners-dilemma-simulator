@@ -1,8 +1,6 @@
 # Prisoners Dilemma Simulator
 
-This Python program simulates the Prisoner's Dilemma game, allowing players to choose between different prisoner strategies (Cooperator, Defector, Revenger, Tit-for-Tat, Random, and Detective).
-
-The game runs for a specified number of rounds, with a brief delay between each round, and includes an option to view descriptions of each strategy before starting.
+This Python program simulates the Prisoner's Dilemma, allowing players to choose from various strategies (Cooperator, Defector, Revenger, Tit-for-Tat, Random, and Detective). Players can specify the number of rounds, with an optional delay to observe each round’s interactions.
 
 ## Features
 
